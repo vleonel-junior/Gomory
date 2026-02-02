@@ -13,7 +13,7 @@ from typing import Optional, List, Callable
 from dataclasses import dataclass, field
 from enum import Enum
 
-from .problem import Problem
+from .problem import Problem, Sense
 from .tableau import Tableau
 from .simplex import create_initial_tableau, primal_simplex, SimplexStatus
 from .dual_simplex import dual_simplex
@@ -146,11 +146,18 @@ class GomorySolver:
         self.display_callback = display_callback
         self.history: List[Iteration] = []
         self.iteration_count = 0
+        self.is_minimization = (problem.sense == Sense.MINIMIZE)
     
     def _log(self, message: str) -> None:
         """Affiche un message si verbose est activé."""
         if self.verbose:
             print(message)
+    
+    def _convert_objective(self, z: Fraction) -> Fraction:
+        """Convertit la valeur objectif si le problème original est une minimisation."""
+        if self.is_minimization:
+            return -z
+        return z
     
     def _add_iteration(
         self,
@@ -187,9 +194,27 @@ class GomorySolver:
         self._log(str(self.problem))
         self._log("")
         
+        # Convertir minimisation en maximisation si nécessaire
+        # min z = c'x ⇔ max z' = -c'x, puis z = -z'
+        working_problem = self.problem
+        if self.is_minimization:
+            self._log("Note: Conversion min → max (on multiplie l'objectif par -1)")
+            self._log("")
+            from .problem import Problem as ProblemClass
+            working_problem = ProblemClass(
+                objective=[-c for c in self.problem.objective],
+                sense="max",
+                constraints=[
+                    (list(ctr.coefficients), ctr.constraint_type.value, ctr.rhs)
+                    for ctr in self.problem.constraints
+                ],
+                integer_vars=self.problem.integer_vars,
+                var_names=self.problem.var_names
+            )
+        
         # Étape 1: Créer le tableau initial
         self._log("Étape 1: Création du tableau initial (forme standard)")
-        tableau = create_initial_tableau(self.problem)
+        tableau = create_initial_tableau(working_problem)
         self._add_iteration("initialisation", tableau, description="Tableau initial")
         
         # Étape 2: Résoudre le problème relaxé avec le simplexe primal
@@ -227,7 +252,7 @@ class GomorySolver:
         if not self.problem.integer_vars:
             return SolverResult(
                 status=SolverStatus.OPTIMAL_CONTINUOUS,
-                optimal_value=result.objective_value,
+                optimal_value=self._convert_objective(result.objective_value),
                 solution=result.solution,
                 solution_dict=tableau.get_solution(),
                 total_iterations=self.iteration_count,
@@ -251,7 +276,7 @@ class GomorySolver:
                 
                 return SolverResult(
                     status=SolverStatus.OPTIMAL_INTEGER,
-                    optimal_value=z,
+                    optimal_value=self._convert_objective(z),
                     solution=solution[:self.problem.num_variables],
                     solution_dict=tableau.get_solution(),
                     total_iterations=self.iteration_count,
@@ -268,7 +293,7 @@ class GomorySolver:
                 z, _ = tableau.compute_z()
                 return SolverResult(
                     status=SolverStatus.OPTIMAL_INTEGER,
-                    optimal_value=z,
+                    optimal_value=self._convert_objective(z),
                     solution=tableau.get_original_solution()[:self.problem.num_variables],
                     solution_dict=tableau.get_solution(),
                     total_iterations=self.iteration_count,
@@ -327,7 +352,7 @@ class GomorySolver:
         z, _ = tableau.compute_z()
         return SolverResult(
             status=SolverStatus.MAX_CUTS,
-            optimal_value=z,
+            optimal_value=self._convert_objective(z),
             solution=tableau.get_original_solution()[:self.problem.num_variables],
             solution_dict=tableau.get_solution(),
             total_iterations=self.iteration_count,
