@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gomory"
+version = "1.0.0"
+description = "Package Python pour la résolution de programmes linéaires en nombres entiers (PLNE) par la méthode des coupes de Gomory"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+authors = [
+    {name = "Votre Nom", email = "votre.email@example.com"}
+]
+keywords = [
+    "gomory",
+    "integer programming",
+    "linear programming",
+    "simplex",
+    "optimization",
+    "operations research",
+    "PLNE",
+    "cutting planes"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/votre-username/gomory"
+Documentation = "https://github.com/votre-username/gomory#readme"
+Repository = "https://github.com/votre-username/gomory"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["gomory*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
