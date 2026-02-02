@@ -1,5 +1,8 @@
 # Gomory - Méthode des Coupes de Gomory
 
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Package Python pour la résolution de **Programmes Linéaires en Nombres Entiers (PLNE)** par la méthode des coupes de Gomory.
 
 ## 📖 Description
@@ -12,9 +15,33 @@ Ce package implémente la méthode des coupes de Gomory pour résoudre des probl
 
 ## 🚀 Installation
 
+### Depuis le dépôt GitHub
+
+```bash
+# Cloner le dépôt
+git clone https://github.com/vleonel-junior/Gomory.git
+cd Gomory
+
+# Créer un environnement virtuel (recommandé)
+python -m venv .venv
+
+# Activer l'environnement virtuel
+# Windows:
+.venv\Scripts\activate
+# Linux/macOS:
+# source .venv/bin/activate
+
+# Installer le package en mode développement
+pip install -e .
+```
+
+### Installation rapide (si déjà cloné)
+
 ```bash
 pip install -e .
 ```
+
+La commande `pip install -e .` installe le package en mode "editable" (développement), ce qui permet de modifier le code source sans avoir à réinstaller le package.
 
 ## 📋 Utilisation
 

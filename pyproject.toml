@@ -10,7 +10,7 @@ readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.8"
 authors = [
-    {name = "Votre Nom", email = "votre.email@example.com"}
+    {name = "vleonel-junior"}
 ]
 keywords = [
     "gomory",
@@ -44,9 +44,9 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/votre-username/gomory"
-Documentation = "https://github.com/votre-username/gomory#readme"
-Repository = "https://github.com/votre-username/gomory"
+Homepage = "https://github.com/vleonel-junior/Gomory"
+Documentation = "https://github.com/vleonel-junior/Gomory#readme"
+Repository = "https://github.com/vleonel-junior/Gomory"
 
 [tool.setuptools.packages.find]
 where = ["."]
