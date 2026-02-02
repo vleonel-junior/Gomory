@@ -35,36 +35,36 @@ from gomory import Problem, GomorySolver, display_tableau, display_cut
 
 def main():
     print("=" * 70)
-    print("MÉTHODE DES COUPES DE GOMORY - PROBLÈME DU SAC À DOS")
+    print("METHODE DES COUPES DE GOMORY - PROBLEME DU SAC A DOS")
     print("=" * 70)
     print()
     
     # Description du problème
-    print("ÉNONCÉ DU PROBLÈME")
+    print("ENONCE DU PROBLEME")
     print("-" * 70)
     print("""
-Soit à remplir un sac ne pouvant supporter que 14kg, par un, deux ou trois 
-objets parmi les trois objets O₁, O₂, O₃:
-    - O₁: poids = 4 kg, valeur = 6
-    - O₂: poids = 6 kg, valeur = 8  
-    - O₃: poids = 8 kg, valeur = 7
+Soit a remplir un sac ne pouvant supporter que 14kg, par un, deux ou trois 
+objets parmi les trois objets O1, O2, O3:
+    - O1: poids = 4 kg, valeur = 6
+    - O2: poids = 6 kg, valeur = 8  
+    - O3: poids = 8 kg, valeur = 7
 
 Objectif: Maximiser la valeur totale des objets dans le sac.
 
-Soit xᵢ le nombre d'objets Oᵢ placés dans le sac (xᵢ ∈ {0, 1}).
+Soit xi le nombre d'objets Oi places dans le sac (xi dans {0, 1}).
 """)
     
-    print("MODÉLISATION")
+    print("MODELISATION")
     print("-" * 70)
     print("""
-    max z = 6x₁ + 8x₂ + 7x₃
+    max z = 6*x1 + 8*x2 + 7*x3
     
     sous contraintes:
-        4x₁ + 6x₂ + 8x₃ ≤ 14   (contrainte de poids)
-        x₁ ≤ 1                  (au plus un objet O₁)
-        x₂ ≤ 1                  (au plus un objet O₂)
-        x₃ ≤ 1                  (au plus un objet O₃)
-        x₁, x₂, x₃ ∈ ℕ         (contraintes d'intégrité)
+        4*x1 + 6*x2 + 8*x3 <= 14   (contrainte de poids)
+        x1 <= 1                     (au plus un objet O1)
+        x2 <= 1                     (au plus un objet O2)
+        x3 <= 1                     (au plus un objet O3)
+        x1, x2, x3 entiers          (contraintes d'integrite)
 """)
     
     # Définir le problème
@@ -73,15 +73,15 @@ Soit xᵢ le nombre d'objets Oᵢ placés dans le sac (xᵢ ∈ {0, 1}).
         sense="max",
         constraints=[
             ([4, 6, 8], "<=", 14),  # Contrainte de poids
-            ([1, 0, 0], "<=", 1),   # x₁ ≤ 1
-            ([0, 1, 0], "<=", 1),   # x₂ ≤ 1
-            ([0, 0, 1], "<=", 1),   # x₃ ≤ 1
+            ([1, 0, 0], "<=", 1),   # x1 <= 1
+            ([0, 1, 0], "<=", 1),   # x2 <= 1
+            ([0, 0, 1], "<=", 1),   # x3 <= 1
         ],
-        integer_vars=[0, 1, 2],  # x₁, x₂, x₃ doivent être entières
+        integer_vars=[0, 1, 2],  # x1, x2, x3 doivent etre entieres
         var_names=["x1", "x2", "x3"]
     )
     
-    print("RÉSOLUTION")
+    print("RESOLUTION")
     print("-" * 70)
     print()
     

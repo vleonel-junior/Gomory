@@ -112,7 +112,7 @@ def display_tableau(
     
     # Ligne Ci - Zi
     if show_reduced_costs:
-        rc_row = ["", "Ci-Zi", ""]
+        rc_row = ["", "", "Ci-Zi"]
         for j in range(tableau.num_cols):
             rc_row.append(format_fraction(reduced_costs[j]))
         table_rows.append(rc_row)
